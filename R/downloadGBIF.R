@@ -28,7 +28,7 @@ download_gbif  <- function(scientificName,            # scientific name
 
   } else {
     # if it exists, download it
-    dlKey <- occ_download(
+    dlKey <- rgbif::occ_download(
 
       pred("hasGeospatialIssue", FALSE),
       pred("hasCoordinate", TRUE),
@@ -37,13 +37,13 @@ download_gbif  <- function(scientificName,            # scientific name
       user = user, pwd = pwd, email = email) %>%
 
       # get download status
-      occ_download_wait()
+      rgbif::occ_download_wait()
 
 
 
     # Load data
-    dat <- occ_download_get(dlKey$key) %>%
-      occ_download_import()
+    dat <- rgbif::occ_download_get(dlKey$key) %>%
+      rbigf::occ_download_import()
 
 
     # Remove zipped file
@@ -58,7 +58,7 @@ download_gbif  <- function(scientificName,            # scientific name
     #   dir.create(cite.path)
     # }
 
-    cite <- gbif_citation(as.character(dlKey$key))[[1]]
+    cite <- rgbif::gbif_citation(as.character(dlKey$key))[[1]]
     #writeLines(cite, paste0(cite.path, "/", cite.label, ".txt"))
   }
 
