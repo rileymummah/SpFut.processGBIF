@@ -2,7 +2,7 @@
 % Please edit documentation in R/processGBIF.R
 \name{process_gbif}
 \alias{process_gbif}
-\title{processGBIF}
+\title{A wrapper for download_gbif() and clean_gbif() to process data in one step}
 \usage{
 process_gbif(
   scientificName,
@@ -20,8 +20,41 @@ process_gbif(
 )
 }
 \arguments{
-\item{institutionBufferKm}{}
+\item{scientificName}{(character) Scientific name}
+
+\item{keep}{(character) Must be "iNaturalist" or "Museum"}
+
+\item{sp.code}{(character) Four character species code}
+
+\item{user}{(character) Username for iNaturalist account}
+
+\item{pwd}{(character) Password for iNaturalist account}
+
+\item{email}{(character) Email address for iNaturalist account}
+
+\item{startYear}{(numeric) Start year of data}
+
+\item{endYear}{(numeric) End year of data}
+
+\item{coordPrec}{(numeric) Threshold for coordinate precision}
+
+\item{centroidBufferKm}{(numeric) Threshold for distance from state/county/etc centroid}
+
+\item{capitalBufferKm}{(numeric) Threshold for distance from capitol}
+
+\item{institutionBufferKm}{(numeric) Threshold for distance from institution (zoo, arboretum, etc.)}
+}
+\value{
+A list of GBIF data and the associated citation
 }
 \description{
-processGBIF
+A wrapper for download_gbif() and clean_gbif() to process data in one step
+}
+\examples{
+dat <- process_gbif(scientificName = "Anaxyrus microscaphus",
+                    sp.code = "ANMI",
+                    keep = "iNat",
+                    user = "Username",
+                    pwd = "Password",
+                    email = "email@email.com")
 }

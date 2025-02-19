@@ -15,8 +15,32 @@ clean_gbif(
 )
 }
 \arguments{
-\item{institutionBufferKm}{}
+\item{raw}{(data.frame) Output from download_gbif()}
+
+\item{startYear}{(numeric) Start year of data}
+
+\item{endYear}{(numeric) End year of data}
+
+\item{coordPrec}{(numeric) Threshold for coordinate precision}
+
+\item{centroidBufferKm}{(numeric) Threshold for distance from state/county/etc centroid}
+
+\item{capitalBufferKm}{(numeric) Threshold for distance from capitol}
+
+\item{institutionBufferKm}{(numeric) Threshold for distance from institution (zoo, arboretum, etc.)}
+}
+\value{
+A cleaned GBIF dataset
 }
 \description{
 Title
+}
+\examples{
+raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
+                     user = "Username",
+                     pwd = "Password",
+                     email = "email@email.com")
+
+clean <- clean_gbif(raw = raw$dat,
+                    startYear = 1980)
 }

@@ -1,24 +1,33 @@
 #' Title
 #'
-#' @param raw
-#' @param startYear
-#' @param endYear
-#' @param coordPrec
-#' @param centroidBufferKm
-#' @param capitalBufferKm
-#' @param institutionBufferKm
+#' @param raw (data.frame) Output from download_gbif()
+#' @param startYear (numeric) Start year of data
+#' @param endYear (numeric) End year of data
+#' @param coordPrec (numeric) Threshold for coordinate precision
+#' @param centroidBufferKm (numeric) Threshold for distance from state/county/etc centroid
+#' @param capitalBufferKm (numeric) Threshold for distance from capitol
+#' @param institutionBufferKm (numeric) Threshold for distance from institution (zoo, arboretum, etc.)
 #'
-#' @returns
+#' @returns A cleaned GBIF dataset
 #' @export
 #'
 #' @examples
-clean_gbif <- function(raw,                                                 # output from download_gbif()
-                       startYear = 1900,                                    # start year for data
-                       endYear = as.numeric(format(Sys.Date(), "%Y")),      # end year for data
-                       coordPrec = 0.01,                                    # threshold for coordinate precision
-                       centroidBufferKm = 2000,                             # threshold for distance from state/county/etc centroid
-                       capitalBufferKm = 2000,                              # threshold for distance from capital
-                       institutionBufferKm = 2000) {                        # threshold for distance from institution (zoo, arboretum, etc.)
+#' raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
+#'                      user = "Username",
+#'                      pwd = "Password",
+#'                      email = "email@email.com")
+#'
+#' clean <- clean_gbif(raw = raw$dat,
+#'                     startYear = 1980)
+
+
+clean_gbif <- function(raw,
+                       startYear = 1900,
+                       endYear = as.numeric(format(Sys.Date(), "%Y")),
+                       coordPrec = 0.01,
+                       centroidBufferKm = 2000,
+                       capitalBufferKm = 2000,
+                       institutionBufferKm = 2000) {
 
   ### filtering criteria from https://data-blog.gbif.org/post/gbif-filtering-guide/
 
@@ -38,16 +47,16 @@ clean_gbif <- function(raw,                                                 # ou
     filter(!decimalLatitude == 0 | !decimalLongitude == 0) %>%
 
     # remove points within 2km of country centroids
-    cc_cen(buffer = centroidBufferKm) %>%
+    CoordinateCleaner::cc_cen(buffer = centroidBufferKm) %>%
 
     # remove points within 2km of capital
-    cc_cap(buffer = capitalBufferKm) %>%
+    CoordinateCleaner::cc_cap(buffer = capitalBufferKm) %>%
 
     # remove points within 2km of zoo/herbarium
-    cc_inst(buffer = institutionBufferKm) %>%
+    CoordinateCleaner::cc_inst(buffer = institutionBufferKm) %>%
 
     # remove points that are in the ocean
-    cc_sea() %>%
+    CoordinateCleaner::cc_sea() %>%
 
     # remove duplicates
     distinct(decimalLongitude, decimalLatitude, speciesKey, datasetKey, .keep_all = TRUE)  %>%
@@ -58,8 +67,7 @@ clean_gbif <- function(raw,                                                 # ou
 
   # separate counts into individual rows
   dat_clean$individualCount[which(is.na(dat_clean$individualCount))] <- 1
-  dat_clean <- dat_clean %>%
-    uncount(individualCount)
+  dat_clean <- dat_clean %>% uncount(individualCount)
 
   # clean up
   dat <- raw %>%

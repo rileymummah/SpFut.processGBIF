@@ -5,13 +5,17 @@
 #' @param pwd (character) Password for iNaturalist account
 #' @param email (character) Email address for iNaturalist account
 #'
-#' @returns
+#' @returns A list of GBIF data and the associated citation
 #' @export
 #'
 #' @examples
+#' raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
+#'                      user = "Username",
+#'                      pwd = "Password",
+#'                      email = "email@email.com")
 
 
-download_gbif  <- function(scientificName,            # scientific name
+download_gbif  <- function(scientificName,
                            user,
                            pwd,
                            email) {
@@ -30,9 +34,9 @@ download_gbif  <- function(scientificName,            # scientific name
     # if it exists, download it
     dlKey <- rgbif::occ_download(
 
-      pred("hasGeospatialIssue", FALSE),
-      pred("hasCoordinate", TRUE),
-      pred_in("taxonKey", taxonKey),
+      rgbif::pred("hasGeospatialIssue", FALSE),
+      rgbif::pred("hasCoordinate", TRUE),
+      rgbif::pred_in("taxonKey", taxonKey),
       format = "SIMPLE_CSV",
       user = user, pwd = pwd, email = email) %>%
 
@@ -43,7 +47,7 @@ download_gbif  <- function(scientificName,            # scientific name
 
     # Load data
     dat <- rgbif::occ_download_get(dlKey$key) %>%
-      rbigf::occ_download_import()
+      rgbif::occ_download_import()
 
 
     # Remove zipped file

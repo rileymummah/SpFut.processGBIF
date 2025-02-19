@@ -15,6 +15,15 @@ download_gbif(scientificName, user, pwd, email)
 
 \item{email}{(character) Email address for iNaturalist account}
 }
+\value{
+A list of GBIF data and the associated citation
+}
 \description{
 Download GBIF data
+}
+\examples{
+raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
+                     user = "Username",
+                     pwd = "Password",
+                     email = "email@email.com")
 }
