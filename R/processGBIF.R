@@ -17,12 +17,15 @@
 #' @export
 #'
 #' @examples
+#'
+#' \dontrun{
 #' dat <- process_gbif(scientificName = "Anaxyrus microscaphus",
 #'                     sp.code = "ANMI",
 #'                     keep = "iNat",
 #'                     user = "Username",
 #'                     pwd = "Password",
 #'                     email = "email@email.com")
+#' }
 
 
 process_gbif <- function(scientificName,

@@ -9,10 +9,12 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
 #'                      user = "Username",
 #'                      pwd = "Password",
 #'                      email = "email@email.com")
+#' }
 
 
 download_gbif  <- function(scientificName,

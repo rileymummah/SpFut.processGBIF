@@ -12,6 +12,8 @@
 #' @export
 #'
 #' @examples
+#'
+#' \dontrun{
 #' raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
 #'                      user = "Username",
 #'                      pwd = "Password",
@@ -19,6 +21,7 @@
 #'
 #' clean <- clean_gbif(raw = raw$dat,
 #'                     startYear = 1980)
+#' }
 
 
 clean_gbif <- function(raw,
@@ -73,9 +76,9 @@ clean_gbif <- function(raw,
   dat <- raw %>%
 
     # categorize as iNat or Museum
-    mutate(source = dplyr::case_when(institutionCode == "iNaturalist" ~ "iNat",
-                                     basisOfRecord == "PRESERVED_SPECIMEN" ~ "Museum",
-                                     T ~ "Other"),
+    dplyr::mutate(source = dplyr::case_when(institutionCode == "iNaturalist" ~ "iNat",
+                                             basisOfRecord == "PRESERVED_SPECIMEN" ~ "Museum",
+                                             T ~ "Other"),
 
 
            # whether to include in "clean" dataset or not

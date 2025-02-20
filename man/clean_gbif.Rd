@@ -36,6 +36,8 @@ A cleaned GBIF dataset
 Title
 }
 \examples{
+
+\dontrun{
 raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
                      user = "Username",
                      pwd = "Password",
@@ -43,4 +45,5 @@ raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
 
 clean <- clean_gbif(raw = raw$dat,
                     startYear = 1980)
+}
 }

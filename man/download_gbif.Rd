@@ -22,8 +22,10 @@ A list of GBIF data and the associated citation
 Download GBIF data
 }
 \examples{
+\dontrun{
 raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
                      user = "Username",
                      pwd = "Password",
                      email = "email@email.com")
+}
 }
