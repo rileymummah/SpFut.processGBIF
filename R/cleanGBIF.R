@@ -33,18 +33,18 @@ clean_gbif <- function(raw,
 
   dat_clean <- raw %>%
 
-    filter(occurrenceStatus  == "PRESENT") %>%
+    dplyr::filter(occurrenceStatus  == "PRESENT") %>%
 
-    filter(!basisOfRecord %in% c("FOSSIL_SPECIMEN","LIVING_SPECIMEN")) %>%
+    dplyr::filter(!basisOfRecord %in% c("FOSSIL_SPECIMEN","LIVING_SPECIMEN")) %>%
 
-    filter(year >= startYear) %>%
+    dplyr::filter(year >= startYear) %>%
 
     # assign NA where appropriate
-    mutate(coordinateUncertaintyInMeters = case_when(coordinateUncertaintyInMeters %in% c(301,3036,999,9999) ~ NA,
-                                                     T ~ coordinateUncertaintyInMeters)) %>%
+    dplyr::mutate(coordinateUncertaintyInMeters = dplyr::case_when(coordinateUncertaintyInMeters %in% c(301,3036,999,9999) ~ NA,
+                                                                   T ~ coordinateUncertaintyInMeters)) %>%
 
     # remove points at (0, 0)
-    filter(!decimalLatitude == 0 | !decimalLongitude == 0) %>%
+    dplyr::filter(!decimalLatitude == 0 | !decimalLongitude == 0) %>%
 
     # remove points within 2km of country centroids
     CoordinateCleaner::cc_cen(buffer = centroidBufferKm) %>%
@@ -59,30 +59,30 @@ clean_gbif <- function(raw,
     CoordinateCleaner::cc_sea() %>%
 
     # remove duplicates
-    distinct(decimalLongitude, decimalLatitude, speciesKey, datasetKey, .keep_all = TRUE)  %>%
+    dplyr::distinct(decimalLongitude, decimalLatitude, speciesKey, datasetKey, .keep_all = TRUE)  %>%
 
 
-    filter(decimalLongitude < 0)
+    dplyr::filter(decimalLongitude < 0)
 
 
   # separate counts into individual rows
   dat_clean$individualCount[which(is.na(dat_clean$individualCount))] <- 1
-  dat_clean <- dat_clean %>% uncount(individualCount)
+  dat_clean <- dat_clean %>% tidyr::uncount(individualCount)
 
   # clean up
   dat <- raw %>%
 
     # categorize as iNat or Museum
-    mutate(source = case_when(institutionCode == "iNaturalist" ~ "iNat",
-                              basisOfRecord == "PRESERVED_SPECIMEN" ~ "Museum",
-                              T ~ "Other"),
+    mutate(source = dplyr::case_when(institutionCode == "iNaturalist" ~ "iNat",
+                                     basisOfRecord == "PRESERVED_SPECIMEN" ~ "Museum",
+                                     T ~ "Other"),
 
 
            # whether to include in "clean" dataset or not
-           incl = case_when(gbifID %in% dat_clean$gbifID &
-                              source %in% c("iNat", "Museum") ~ 1,
-                            T ~ 0)) %>%
-    filter(incl == 1)
+           incl = dplyr::case_when(gbifID %in% dat_clean$gbifID &
+                                     source %in% c("iNat", "Museum") ~ 1,
+                                   T ~ 0)) %>%
+    dplyr::filter(incl == 1)
 
 
 

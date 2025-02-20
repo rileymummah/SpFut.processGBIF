@@ -46,8 +46,7 @@ download_gbif  <- function(scientificName,
 
 
     # Load data
-    dat <- rgbif::occ_download_get(dlKey$key) %>%
-      rgbif::occ_download_import()
+    dat <- rgbif::occ_download_get(dlKey$key) %>% rgbif::occ_download_import()
 
 
     # Remove zipped file

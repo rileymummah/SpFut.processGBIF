@@ -61,9 +61,9 @@ process_gbif <- function(scientificName,
 
     # Keep records from desired source
     if (keep %in% c("iNat", "iNaturalist", "inat", "inaturalist")) {
-      gbif.clean <- filter(gbif.clean, source == "iNat")
+      gbif.clean <- dplyr::filter(gbif.clean, source == "iNat")
     } else if (keep %in% c("museum", "Museum")) {
-      gbif.clean <- filter(gbif.clean, source == "Museum")
+      gbif.clean <- dplyr::filter(gbif.clean, source == "Museum")
     } else {
       cat("'keep' must be 'iNaturalist' or 'Museum'")
     }
@@ -72,35 +72,37 @@ process_gbif <- function(scientificName,
 
       # format for species futures
       gbif.clean <- gbif.clean %>%
-        mutate(date = substr(eventDate, 1, 10),
-               date = as_date(date),
-               year = year(date),
-               lat = decimalLatitude,
-               lon = decimalLongitude,
-               coord.unc = coordinateUncertaintyInMeters,
-               survey.conducted = 1,
-               count = 1,
-               data.type = "PO",
-               age = "NR",
-               individual.id = NA,
-               time.to.detect = NA,
-               species = sp.code) %>%
+        dplyr::mutate(date = substr(eventDate, 1, 10),
+                       date = lubridate::as_date(date),
+                       year = lubridate::year(date),
+                       lat = decimalLatitude,
+                       lon = decimalLongitude,
+                       coord.unc = coordinateUncertaintyInMeters,
+                       survey.conducted = 1,
+                       count = 1,
+                       data.type = "PO",
+                       age = "NR",
+                       individual.id = NA,
+                       time.to.detect = NA,
+                       species = sp.code) %>%
 
         # make site.id
-        group_by(lat, lon) %>%
-        mutate(site.id = paste0("iNat", cur_group_id())) %>%
-        ungroup() %>%
+        dplyr::group_by(lat, lon) %>%
+        dplyr::mutate(site.id = paste0("iNat", dplyr::cur_group_id())) %>%
+        dplyr::ungroup() %>%
 
 
         # get survey.id
-        mutate(survey.id = 1:nrow(.),
-               pass.id = 1,
-               survey.pass = paste0(survey.id, "_", pass.id)) %>%
+        dplyr::mutate(survey.id = 1:nrow(.),
+                       pass.id = 1,
+                       survey.pass = paste0(survey.id, "_", pass.id)) %>%
 
 
         # select cols to keep
-        select(site.id, lat, lon, stateProvince, coord.unc, eventDate, day, month, year, survey.conducted, survey.id, pass.id, survey.pass, data.type, species,
-               age, individual.id, time.to.detect, count)
+        dplyr::select(site.id, lat, lon, stateProvince, coord.unc, eventDate,
+                      day, month, year, survey.conducted, survey.id, pass.id,
+                      survey.pass, data.type, species, age, individual.id,
+                      time.to.detect, count)
 
       all <- list(dat = gbif.clean,
                   citation = gbif.raw$citation)
