@@ -1,9 +1,3 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
-})
-
-
-library(SpFut.processGBIF)
 
 user <- "clanescher"
 pwd <- "0xjFyIlxJoKrNh"
@@ -15,6 +9,7 @@ raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
                      user = user,
                      pwd = pwd,
                      email = email)
+
 clean <- clean_gbif(raw = raw$dat,
                     startYear = 1980)
 
@@ -30,6 +25,7 @@ dat1 <- process_gbif(scientificName = sciname,
                      user = user,
                      pwd = pwd,
                      email = email)
+
 dat2 <- process_gbif(scientificName = sciname,
                      sp.code = sp.code,
                      keep = "museum",

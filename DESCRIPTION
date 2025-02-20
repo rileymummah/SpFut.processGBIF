@@ -1,6 +1,6 @@
 Package: SpFut.processGBIF
 Title: Download and Process GBIF Data
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     c(person(given = "C. Lane", 
               family = "Scher", 

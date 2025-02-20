@@ -51,7 +51,6 @@ A list of GBIF data and the associated citation
 A wrapper for download_gbif() and clean_gbif() to process data in one step
 }
 \examples{
-
 \dontrun{
 dat <- process_gbif(scientificName = "Anaxyrus microscaphus",
                     sp.code = "ANMI",

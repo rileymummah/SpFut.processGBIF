@@ -36,7 +36,6 @@ A cleaned GBIF dataset
 Title
 }
 \examples{
-
 \dontrun{
 raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
                      user = "Username",

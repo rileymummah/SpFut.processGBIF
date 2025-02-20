@@ -34,16 +34,16 @@ download_gbif  <- function(scientificName,
 
   } else {
     # if it exists, download it
-    dlKey <- rgbif::occ_download(
+    x <- rgbif::occ_download(
 
-      rgbif::pred("hasGeospatialIssue", FALSE),
-      rgbif::pred("hasCoordinate", TRUE),
-      rgbif::pred_in("taxonKey", taxonKey),
-      format = "SIMPLE_CSV",
-      user = user, pwd = pwd, email = email) %>%
+                rgbif::pred("hasGeospatialIssue", FALSE),
+                rgbif::pred("hasCoordinate", TRUE),
+                rgbif::pred_in("taxonKey", taxonKey),
+                format = "SIMPLE_CSV",
+                user = user, pwd = pwd, email = email)
 
       # get download status
-      rgbif::occ_download_wait(.)
+      dlKey <- rgbif::occ_download_wait(x)
 
 
 
