@@ -9,10 +9,8 @@
 #' @param institutionBufferKm (numeric) Threshold for distance from institution (zoo, arboretum, etc.)
 #'
 #' @returns A cleaned GBIF dataset
-#' @export
 #'
 #' @examples
-#'
 #' \dontrun{
 #' raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
 #'                      user = "Username",

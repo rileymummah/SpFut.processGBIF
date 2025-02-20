@@ -14,10 +14,8 @@
 #' @param institutionBufferKm (numeric) Threshold for distance from institution (zoo, arboretum, etc.)
 #'
 #' @returns A list of GBIF data and the associated citation
-#' @export
 #'
 #' @examples
-#'
 #' \dontrun{
 #' dat <- process_gbif(scientificName = "Anaxyrus microscaphus",
 #'                     sp.code = "ANMI",
