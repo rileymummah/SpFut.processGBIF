@@ -43,7 +43,7 @@ download_gbif  <- function(scientificName,
       user = user, pwd = pwd, email = email) %>%
 
       # get download status
-      rgbif::occ_download_wait()
+      rgbif::occ_download_wait(.)
 
 
 
