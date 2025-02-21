@@ -6,7 +6,7 @@
 #' @param email (character) Email address for iNaturalist account
 #'
 #' @returns A list of GBIF data and the associated citation
-#' @export
+#' @importFrom rbgif occ_download_wait
 #'
 #' @examples
 #' \dontrun{
