@@ -7,6 +7,7 @@
 #'
 #' @returns A list of GBIF data and the associated citation
 #' @importFrom rbgif occ_download_wait
+#' @export
 #'
 #' @examples
 #' \dontrun{
