@@ -2,7 +2,7 @@
 % Please edit documentation in R/cleanGBIF.R
 \name{clean_gbif}
 \alias{clean_gbif}
-\title{Title}
+\title{Clean GBIF data}
 \usage{
 clean_gbif(
   raw,
@@ -33,7 +33,7 @@ clean_gbif(
 A cleaned GBIF dataset
 }
 \description{
-Title
+Clean raw GBIF data. Removes duplicates and coordinates which are 2km within a country centroid, a city, or a zoo/herbarium.
 }
 \examples{
 \dontrun{

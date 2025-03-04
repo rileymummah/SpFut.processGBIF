@@ -6,7 +6,7 @@
 #' @param email (character) Email address for iNaturalist account
 #'
 #' @returns A list of GBIF data and the associated citation
-#' @importFrom rbgif occ_download occ_download_wait name_backbone occ_download_get pred pred_in occ_download_import gbif_citation
+#' @importFrom rgbif occ_download occ_download_wait name_backbone occ_download_get pred pred_in occ_download_import gbif_citation
 #' @export
 #'
 #' @examples

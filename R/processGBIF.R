@@ -1,4 +1,6 @@
-#' A wrapper for download_gbif() and clean_gbif() to process data in one step
+#' Download and Process GBIF Data
+#'
+#' @description A wrapper for download_gbif() and clean_gbif() to process data in one step
 #'
 #' @param scientificName (character) Scientific name
 #' @param keep (character) Must be "iNaturalist" or "Museum"

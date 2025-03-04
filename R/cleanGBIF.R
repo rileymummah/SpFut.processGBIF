@@ -1,4 +1,6 @@
-#' Title
+#' Clean GBIF data
+#'
+#' @description Clean raw GBIF data. Removes duplicates and coordinates which are 2km within a country centroid, a city, or a zoo/herbarium.
 #'
 #' @param raw (data.frame) Output from download_gbif()
 #' @param startYear (numeric) Start year of data

@@ -2,7 +2,7 @@
 % Please edit documentation in R/processGBIF.R
 \name{process_gbif}
 \alias{process_gbif}
-\title{A wrapper for download_gbif() and clean_gbif() to process data in one step}
+\title{Download and Process GBIF Data}
 \usage{
 process_gbif(
   scientificName,
