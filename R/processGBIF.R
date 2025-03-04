@@ -4,7 +4,7 @@
 #'
 #' @param scientificName (character) Scientific name
 #' @param keep (character) Must be "iNaturalist" or "Museum"
-#' @param sp.code (character) Four character species code
+#' @param sp.code (character) User-provided four character species code
 #' @param user (character) Username for iNaturalist account
 #' @param pwd (character) Password for iNaturalist account
 #' @param email (character) Email address for iNaturalist account
