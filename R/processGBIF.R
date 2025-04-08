@@ -3,11 +3,11 @@
 #' @description A wrapper for download_gbif() and clean_gbif() to process data in one step
 #'
 #' @param scientificName (character) Scientific name
-#' @param keep (character) Must be "iNaturalist" or "Museum"
+#' @param keep (character) Must be "iNaturalist" or "Museum"; Not case sensitive
 #' @param sp.code (character) User-provided four character species code
-#' @param user (character) Username for iNaturalist account
-#' @param pwd (character) Password for iNaturalist account
-#' @param email (character) Email address for iNaturalist account
+#' @param user (character) Username for GBIF account
+#' @param pwd (character) Password for GBIF account
+#' @param email (character) Email address for GBIF account
 #' @param startYear (numeric) Start year of data
 #' @param endYear (numeric) End year of data
 #' @param coordPrec (numeric) Threshold for coordinate precision

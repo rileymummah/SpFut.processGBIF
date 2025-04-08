@@ -13,6 +13,8 @@
 #' @returns A cleaned GBIF dataset
 #' @export
 #'
+#' @importFrom CoordinateCleaner cc_cen cc_cap cc_inst cc_sea
+#'
 #' @examples
 #' \dontrun{
 #' raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",

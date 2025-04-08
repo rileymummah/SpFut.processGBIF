@@ -1,9 +1,9 @@
 #' Download GBIF data
 #'
 #' @param scientificName (character) Scientific name
-#' @param user (character) Username for iNaturalist account
-#' @param pwd (character) Password for iNaturalist account
-#' @param email (character) Email address for iNaturalist account
+#' @param user (character) Username for GBIF account
+#' @param pwd (character) Password for GBIF account
+#' @param email (character) Email address for GBIF account
 #'
 #' @returns A list of GBIF data and the associated citation
 #' @importFrom rgbif occ_download occ_download_wait name_backbone occ_download_get pred pred_in occ_download_import gbif_citation
