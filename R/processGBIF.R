@@ -18,6 +18,8 @@
 #' @returns A list of GBIF data and the associated citation
 #' @export
 #'
+#' @importFrom lubridate as_date year
+#'
 #' @examples
 #' \dontrun{
 #' dat <- process_gbif(scientificName = "Anaxyrus microscaphus",
@@ -110,6 +112,7 @@ process_gbif <- function(scientificName,
 
       all <- list(dat = gbif.clean,
                   citation = gbif.raw$citation)
+
       return(all)
 
     } else {

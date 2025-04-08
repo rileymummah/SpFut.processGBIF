@@ -13,7 +13,7 @@ Authors@R:
               role = c("com", "cre"),
               comment = c(ORCID = "0000-0002-4542-3483"))
       )
-Description: A simple package of wrappers for the rgbif functions to download and process iNat and museum data from the Global Biodiversity Information Facility (GBIF)
+Description: A simple package of wrappers for the rgbif functions to download and process iNat and museum data from the Global Biodiversity Information Facility (GBIF).
 License: CC0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -30,5 +30,6 @@ URL: https://github.com/rileymummah/SpFut.processGBIF
 BugReports: https://github.com/rileymummah/SpFut.processGBIF/issues
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr

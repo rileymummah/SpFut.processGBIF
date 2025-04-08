@@ -57,15 +57,8 @@ download_gbif  <- function(scientificName,
     unlink(rm.dir)
 
 
-    # # Write citation info
-    # if (substr(cite.path, nchar(cite.path), nchar(cite.path)) == "/") cite.path <- substr(cite.path, 1, nchar(cite.path)-1)
-    #
-    # if (dir.exists(cite.path) == F) {
-    #   dir.create(cite.path)
-    # }
-
     cite <- rgbif::gbif_citation(as.character(dlKey$key))[[1]]
-    #writeLines(cite, paste0(cite.path, "/", cite.label, ".txt"))
+
   }
 
   all <- list(dat = dat,

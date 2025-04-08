@@ -22,15 +22,15 @@ process_gbif(
 \arguments{
 \item{scientificName}{(character) Scientific name}
 
-\item{keep}{(character) Must be "iNaturalist" or "Museum"}
+\item{keep}{(character) Must be "iNaturalist" or "Museum"; Not case sensitive}
 
-\item{sp.code}{(character) Four character species code}
+\item{sp.code}{(character) User-provided four character species code}
 
-\item{user}{(character) Username for iNaturalist account}
+\item{user}{(character) Username for GBIF account}
 
-\item{pwd}{(character) Password for iNaturalist account}
+\item{pwd}{(character) Password for GBIF account}
 
-\item{email}{(character) Email address for iNaturalist account}
+\item{email}{(character) Email address for GBIF account}
 
 \item{startYear}{(numeric) Start year of data}
 

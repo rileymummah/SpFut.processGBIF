@@ -9,11 +9,11 @@ download_gbif(scientificName, user, pwd, email)
 \arguments{
 \item{scientificName}{(character) Scientific name}
 
-\item{user}{(character) Username for iNaturalist account}
+\item{user}{(character) Username for GBIF account}
 
-\item{pwd}{(character) Password for iNaturalist account}
+\item{pwd}{(character) Password for GBIF account}
 
-\item{email}{(character) Email address for iNaturalist account}
+\item{email}{(character) Email address for GBIF account}
 }
 \value{
 A list of GBIF data and the associated citation

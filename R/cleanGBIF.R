@@ -90,8 +90,6 @@ clean_gbif <- function(raw,
                                    T ~ 0)) %>%
     dplyr::filter(incl == 1)
 
-
-
   return(dat)
 
 }

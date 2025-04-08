@@ -2,7 +2,7 @@
 title: "SpFut.processGBIF"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{processGBIF}
+  %\VignetteIndexEntry{SpFut.processGBIF}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -105,7 +105,7 @@ museum <- process_gbif(scientificName = sciname,
                        user = user,
                        pwd = pwd,
                        email = email)
+
+head(museum)
 ```
-
-
 
