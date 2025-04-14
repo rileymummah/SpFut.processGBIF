@@ -31,7 +31,7 @@ download_gbif  <- function(scientificName,
   if (length(taxonKey) == 0) {
     # If this species doesn't exist in GBIF
     dat <- data.frame()
-    cat(scientificName, " does not exist in GBIF If you do not think this is correct, check the spelling and the taxonomy.")
+    print(paste0(scientificName, " does not exist in GBIF If you do not think this is correct, check the spelling and the taxonomy."))
 
   } else {
     # if it exists, download it
@@ -61,8 +61,16 @@ download_gbif  <- function(scientificName,
 
   }
 
-  all <- list(dat = dat,
-              citation = cite)
+  # Only keep entries that match scientific name
+  dat <- dplyr::filter(dat, species == scientificName)
 
-  return(all)
+  if (nrow(dat) > 0) {
+    all <- list(dat = dat,
+                citation = cite)
+
+    return(all)
+
+  } else {
+    print(paste0("No GBIF data exists for ", scientificName, "."))
+  }
 }

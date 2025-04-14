@@ -80,13 +80,12 @@ clean_gbif <- function(raw,
 
     # categorize as iNat or Museum
     dplyr::mutate(source = dplyr::case_when(institutionCode == "iNaturalist" ~ "iNat",
-                                             basisOfRecord == "PRESERVED_SPECIMEN" ~ "Museum",
-                                             T ~ "Other"),
+                                            basisOfRecord == "PRESERVED_SPECIMEN" ~ "Museum",
+                                            T ~ "Other"),
 
 
            # whether to include in "clean" dataset or not
-           incl = dplyr::case_when(gbifID %in% dat_clean$gbifID &
-                                     source %in% c("iNat", "Museum") ~ 1,
+           incl = dplyr::case_when(gbifID %in% dat_clean$gbifID & source %in% c("iNat", "Museum") ~ 1,
                                    T ~ 0)) %>%
     dplyr::filter(incl == 1)
 
