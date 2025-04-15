@@ -62,7 +62,8 @@ download_gbif  <- function(scientificName,
   }
 
   # Only keep entries that match scientific name
-  dat <- dplyr::filter(dat, species == scientificName)
+  index <- which(dat$species == scientificName)
+  dat <- dat[index,]
 
   if (nrow(dat) > 0) {
     all <- list(dat = dat,
@@ -73,6 +74,6 @@ download_gbif  <- function(scientificName,
   } else {
     print(paste0("No GBIF data exists for ", scientificName, "."))
 
-    return(dat)
+    return(all <- list(dat = dat))
   }
 }

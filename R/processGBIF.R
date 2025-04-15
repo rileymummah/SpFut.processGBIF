@@ -61,9 +61,10 @@ process_gbif <- function(scientificName,
 
     # clean
     gbif.clean <- clean_gbif(gbif.raw$dat,
-                             startYear, endYear,
-                             coordPrec,
-                             centroidBufferKm, capitalBufferKm, institutionBufferKm)
+                             startYear,
+                             endYear,
+                             coordPrec, centroidBufferKm,
+                             capitalBufferKm, institutionBufferKm)
 
     # Keep records from desired source
     if (keep %in% c("iNat", "iNaturalist", "inat", "inaturalist")) {
@@ -94,7 +95,7 @@ process_gbif <- function(scientificName,
 
         # make site.id
         dplyr::group_by(lat, lon) %>%
-        dplyr::mutate(site.id = paste0("iNat", dplyr::cur_group_id())) %>%
+        dplyr::mutate(site.id = paste0(source, dplyr::cur_group_id())) %>%
         dplyr::ungroup() %>%
 
 
