@@ -72,5 +72,7 @@ download_gbif  <- function(scientificName,
 
   } else {
     print(paste0("No GBIF data exists for ", scientificName, "."))
+
+    return(dat)
   }
 }
