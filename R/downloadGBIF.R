@@ -62,7 +62,7 @@ download_gbif  <- function(scientificName,
   }
 
   # Only keep entries that match scientific name
-  index <- which(dat$species == scientificName)
+  index <- which(dat$species == scientificName | str_to_sentence(dat$verbatimScientificName) == scientificName)
   dat <- dat[index,]
 
   if (nrow(dat) > 0) {
