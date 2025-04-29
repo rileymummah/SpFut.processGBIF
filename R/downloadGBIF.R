@@ -7,7 +7,6 @@
 #'
 #' @returns A list of GBIF data and the associated citation
 #' @importFrom rgbif occ_download occ_download_wait name_backbone occ_download_get pred pred_in occ_download_import gbif_citation
-#' @importFrom stringr str_to_sentence
 #' @export
 #'
 #' @examples
@@ -61,10 +60,6 @@ download_gbif  <- function(scientificName,
     cite <- rgbif::gbif_citation(as.character(dlKey$key))[[1]]
 
   }
-
-  # Only keep entries that match scientific name
-  index <- which(dat$species == scientificName | stringr::str_to_sentence(dat$verbatimScientificName) == scientificName)
-  dat <- dat[index,]
 
   if (nrow(dat) > 0) {
     all <- list(dat = dat,
