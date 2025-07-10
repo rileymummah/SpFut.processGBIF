@@ -32,8 +32,8 @@
 
 process_gbif <- function(scientificName,
                          sp.code,
-                         data.path = "data/",
-                         citation.path = "citation/",
+                         data.path,
+                         citation.path,
 
                          # arguments to pass to download_gbif()
                          user,
@@ -106,11 +106,6 @@ process_gbif <- function(scientificName,
   } else {
 
     dat <- gbif.raw$dat
-    
-    # In case a record was submitted under two species names, remove duplicates
-    # (This is an imperfect way to do this but it's better than nothing)
-    dat <- dat %>%
-      distinct(year, month, day, decimalLatitude, decimalLongitude, .keep_all = T)
     
     # Clean gbif data and split into iNat and museum
     gbif.clean <- clean_gbif(dat)
