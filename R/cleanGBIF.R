@@ -5,7 +5,6 @@
 #' @param raw (data.frame) Output from download_gbif()
 #' @param startYear (numeric) Start year of data
 #' @param endYear (numeric) End year of data
-#' @param coordPrec (numeric) Threshold for coordinate precision
 #' @param centroidBufferKm (numeric) Threshold for distance from state/county/etc centroid
 #' @param capitalBufferKm (numeric) Threshold for distance from capitol
 #' @param institutionBufferKm (numeric) Threshold for distance from institution (zoo, arboretum, etc.)
@@ -30,7 +29,6 @@
 clean_gbif <- function(raw,
                        startYear = 1900,
                        endYear = as.numeric(format(Sys.Date(), "%Y")),
-                       coordPrec = 0.01,
                        centroidBufferKm = 2000,
                        capitalBufferKm = 2000,
                        institutionBufferKm = 2000) {

@@ -10,7 +10,6 @@
 #' @param email (character) Email address for GBIF account
 #' @param startYear (numeric) Start year of data
 #' @param endYear (numeric) End year of data
-#' @param coordPrec (numeric) Threshold for coordinate precision
 #' @param centroidBufferKm (numeric) Threshold for distance from state/county/etc centroid
 #' @param capitalBufferKm (numeric) Threshold for distance from capitol
 #' @param institutionBufferKm (numeric) Threshold for distance from institution (zoo, arboretum, etc.)
@@ -43,7 +42,6 @@ process_gbif <- function(scientificName,
                          # arguments to pass to clean_gbif()
                          startYear = 1900,
                          endYear = as.numeric(format(Sys.Date(), "%Y")),
-                         coordPrec = 0.01,
                          centroidBufferKm = 2000,
                          capitalBufferKm = 2000,
                          institutionBufferKm = 2000) {
@@ -63,8 +61,7 @@ process_gbif <- function(scientificName,
     gbif.clean <- clean_gbif(gbif.raw$dat,
                              startYear,
                              endYear,
-                             coordPrec, centroidBufferKm,
-                             capitalBufferKm, institutionBufferKm)
+                             centroidBufferKm, capitalBufferKm, institutionBufferKm)
 
     # Keep records from desired source
     if (keep %in% c("iNat", "iNaturalist", "inat", "inaturalist")) {
