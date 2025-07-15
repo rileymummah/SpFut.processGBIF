@@ -99,7 +99,7 @@ process_gbif <- function(scientificName,
   }
 
   
-  if (nrow(gbif.raw$dat) == 0) {
+  if (length(gbif.raw$dat) == 0) {
     cat("There are no GBIF data for this species.\n")
 
 
