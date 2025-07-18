@@ -4,6 +4,7 @@
 #'
 #' @param scientificName (character vector) A vector of scientific names to search for
 #' @param sp.code (character) User-provided four character species code
+#' @param keep (character vector) Vector including 'iNat' and/or 'museum'; default is both
 #' @param user (character) Username for GBIF account
 #' @param pwd (character) Password for GBIF account
 #' @param email (character) Email address for GBIF account
@@ -32,6 +33,7 @@
 
 process_gbif <- function(scientificName,
                          sp.code,
+                         keep = c("iNat", "museum"),
                          data.path,
                          citation.path,
 
@@ -86,6 +88,10 @@ process_gbif <- function(scientificName,
         
       }
       
+      gbif.raw1$dat$eventDate <- data.table::as.IDate(gbif.raw1$dat$eventDate)
+      
+      gbif.raw1$dat <- select(gbif.raw1$dat, !c(catalogNumber))
+      
       # Then add to existing data
       gbif.raw$dat <- bind_rows(gbif.raw$dat, gbif.raw1$dat)
       cat("Adding ", nrow(gbif.raw1$dat), " records with scientific name ", scinames[n], "\n")
@@ -109,10 +115,19 @@ process_gbif <- function(scientificName,
     
     # Clean gbif data and split into iNat and museum
     gbif.clean <- clean_gbif(dat)
-    inat <- filter(gbif.clean, source == 'iNat')
-    mus <- filter(gbif.clean, source == 'Museum')
     
-    if (nrow(inat) > 0) {
+    if ("iNat" %in% keep) {
+      inat <- filter(gbif.clean, source == 'iNat')
+    } else {
+      inat <- data.frame()
+    }
+    if ("museum" %in% keep) {
+      mus <- filter(gbif.clean, source == 'Museum')
+    } else {
+      mus <- data.frame()
+    }
+    
+    if (nrow(inat) > 0 & "iNat" %in% keep) {
       
       # format for species futures
       inat <- inat %>%
@@ -156,7 +171,7 @@ process_gbif <- function(scientificName,
       cat("There are no iNaturalist records for this species")
     }
     
-    if (nrow(mus) > 0) {
+    if (nrow(mus) > 0 & "museum" %in% keep) {
       
       # format for species futures
       mus <- mus %>%
