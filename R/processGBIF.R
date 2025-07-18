@@ -88,7 +88,7 @@ process_gbif <- function(scientificName,
         
       }
       
-      gbif.raw1$dat$eventDate <- data.table::as.IDate(gbif.raw1$dat$eventDate)
+      gbif.raw1$dat$eventDate <- as.character(gbif.raw1$dat$eventDate)
       
       gbif.raw1$dat <- select(gbif.raw1$dat, !c(catalogNumber))
       
