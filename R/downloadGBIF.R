@@ -1,6 +1,9 @@
 #' Download GBIF data
 #'
 #' @param scientificName (character) Scientific name
+#' @param startYear (numeric) First year to download data from
+#' @param country (character) Country to download data from
+#' @param source (character) Source to download data from (e.g. "iNaturalist")
 #' @param user (character) Username for GBIF account
 #' @param pwd (character) Password for GBIF account
 #' @param email (character) Email address for GBIF account
@@ -21,6 +24,7 @@
 download_gbif  <- function(scientificName,
                            startyear,
                            country = "US",
+                           source = "all",
                            user,
                            pwd,
                            email) {
@@ -48,15 +52,31 @@ download_gbif  <- function(scientificName,
     
   } else {
     # if it exists, download it
-    x <- rgbif::occ_download(
-      rgbif::pred("hasGeospatialIssue", FALSE),
-      rgbif::pred("hasCoordinate", TRUE),
-      rgbif::pred("occurrenceStatus", "PRESENT"),
-      rgbif::pred("taxonKey", taxonKey),
-      rgbif::pred("country", country),
-      rgbif::pred_gte("year", startyear),
-      format = "SIMPLE_CSV",
-      user = user, pwd = pwd, email = email)
+    
+    
+    if (source == "all") {
+      x <- rgbif::occ_download(
+        rgbif::pred("hasGeospatialIssue", FALSE),
+        rgbif::pred("hasCoordinate", TRUE),
+        rgbif::pred("occurrenceStatus", "PRESENT"),
+        rgbif::pred("taxonKey", taxonKey),
+        rgbif::pred("country", country),
+        rgbif::pred_gte("year", startyear),
+        format = "SIMPLE_CSV",
+        user = user, pwd = pwd, email = email)
+    } else {
+      x <- rgbif::occ_download(
+        rgbif::pred("hasGeospatialIssue", FALSE),
+        rgbif::pred("hasCoordinate", TRUE),
+        rgbif::pred("occurrenceStatus", "PRESENT"),
+        rgbif::pred("taxonKey", taxonKey),
+        rgbif::pred("country", country),
+        rgbif::pred_gte("year", startyear),
+        rgbif::pred("institutionCode", source),
+        format = "SIMPLE_CSV",
+        user = user, pwd = pwd, email = email)
+    }
+    
     
     # get download status
     dlKey <- rgbif::occ_download_wait(x)
