@@ -19,57 +19,72 @@
 
 
 download_gbif  <- function(scientificName,
+                           startyear,
+                           country = "US",
                            user,
                            pwd,
                            email) {
-
+  
   # Get taxon key
-  taxonKey <- rgbif::name_backbone(scientificName)$usageKey
-
-
+  
+  tk <- data.frame(taxon = c("Animalia", "Archaea", 
+                             "Bacteria", "Chromista", "Fungi",
+                             "Plantae", "Protozoa", "Viruses",
+                             "Amphibia"),
+                   taxonkey = c(1:8, 131))
+  
+  if (scientificName %in% tk$taxon){
+    taxonKey <- tk$taxonkey[which(tk$taxon == scientificName)]
+  } else {
+    taxonKey <- rgbif::name_backbone(scientificName)$usageKey
+  }
+  
+  
   # Download data
   if (length(taxonKey) == 0) {
     # If this species doesn't exist in GBIF
     dat <- data.frame()
     print(paste0(scientificName, " does not exist in GBIF If you do not think this is correct, check the spelling and the taxonomy."))
-
+    
   } else {
     # if it exists, download it
     x <- rgbif::occ_download(
-
-                rgbif::pred("hasGeospatialIssue", FALSE),
-                rgbif::pred("hasCoordinate", TRUE),
-                rgbif::pred_in("taxonKey", taxonKey),
-                format = "SIMPLE_CSV",
-                user = user, pwd = pwd, email = email)
-
-      # get download status
-      dlKey <- rgbif::occ_download_wait(x)
-
-
-
+      rgbif::pred("hasGeospatialIssue", FALSE),
+      rgbif::pred("hasCoordinate", TRUE),
+      rgbif::pred("occurrenceStatus", "PRESENT"),
+      rgbif::pred("taxonKey", taxonKey),
+      rgbif::pred("country", country),
+      rgbif::pred_gte("year", startyear),
+      format = "SIMPLE_CSV",
+      user = user, pwd = pwd, email = email)
+    
+    # get download status
+    dlKey <- rgbif::occ_download_wait(x)
+    
+    
+    
     # Load data
     dat <- rgbif::occ_download_get(dlKey$key) %>% rgbif::occ_download_import()
-
-
+    
+    
     # Remove zipped file
     rm.dir <- paste0(dlKey$key, ".zip")
     unlink(rm.dir)
-
-
+    
+    
     cite <- rgbif::gbif_citation(as.character(dlKey$key))[[1]]
-
+    
   }
-
+  
   if (nrow(dat) > 0) {
     all <- list(dat = dat,
                 citation = cite)
-
+    
     return(all)
-
+    
   } else {
     print(paste0("No GBIF data exists for ", scientificName, "."))
-
+    
     return(all <- list(dat = dat))
   }
 }
