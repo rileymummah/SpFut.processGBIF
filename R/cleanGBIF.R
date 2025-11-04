@@ -84,8 +84,8 @@ clean_gbif <- function(raw,
 
            # whether to include in "clean" dataset or not
            incl = dplyr::case_when(gbifID %in% dat_clean$gbifID & source %in% c("iNat", "Museum") ~ 1,
-                                   T ~ 0)) %>%
-    dplyr::filter(incl == 1)
+                                   T ~ 0)) #%>%
+    #dplyr::filter(incl == 1)
 
   return(dat)
 
