@@ -64,7 +64,7 @@ download_gbif  <- function(scientificName,
         rgbif::pred_gte("year", startyear),
         format = "SIMPLE_CSV",
         user = user, pwd = pwd, email = email)
-    } else {
+    } else if (source == "iNaturalist") {
       x <- rgbif::occ_download(
         rgbif::pred("hasGeospatialIssue", FALSE),
         rgbif::pred("hasCoordinate", TRUE),
@@ -72,9 +72,12 @@ download_gbif  <- function(scientificName,
         rgbif::pred("taxonKey", taxonKey),
         rgbif::pred("country", country),
         rgbif::pred_gte("year", startyear),
-        rgbif::pred("institutionCode", source),
+        rgbif::pred("institutionCode", "iNaturalist"),
         format = "SIMPLE_CSV",
         user = user, pwd = pwd, email = email)
+    } else {
+      cat("source must be 'all' or 'iNaturalist'")
+      break
     }
     
     
