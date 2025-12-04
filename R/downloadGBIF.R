@@ -72,7 +72,8 @@ download_gbif  <- function(scientificName,
         rgbif::pred("taxonKey", taxonKey),
         rgbif::pred("country", country),
         rgbif::pred_gte("year", startyear),
-        rgbif::pred("institutionCode", "iNaturalist"),
+        #rgbif::pred("institutionCode", "iNaturalist"),
+        pred("datasetKey", "50c9509d-22c7-4a22-a47d-8c48425ef4a7"), # According to John Waller on 12/3/2025, this is more accurate than institutionCode == "iNaturalist"
         format = "SIMPLE_CSV",
         user = user, pwd = pwd, email = email)
     } else {
