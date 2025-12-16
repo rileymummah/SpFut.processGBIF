@@ -91,6 +91,9 @@ clean_gbif <- function(raw,
                                    T ~ 0)) #%>%
     #dplyr::filter(incl == 1)
 
+  
+  cat("Removed ", nrow(dat), " of ", nrow(raw), " records (", nrow(dat)/nrow(raw)*100, "%\n")
+  
   return(dat)
 
 }
