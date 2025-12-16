@@ -17,13 +17,14 @@ Description: A simple package of wrappers for the rgbif functions to download an
 License: CC0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports: 
     CoordinateCleaner,
     dplyr,
     lubridate,
     magrittr,
     rgbif,
+    rlang,
     tidyr
 Config/testthat/edition: 3
 URL: https://github.com/rileymummah/SpFut.processGBIF
@@ -32,4 +33,3 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
-VignetteBuilder: knitr

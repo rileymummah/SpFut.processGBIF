@@ -13,7 +13,6 @@ process_gbif(
   email,
   startYear = 1900,
   endYear = as.numeric(format(Sys.Date(), "\%Y")),
-  coordPrec = 0.01,
   centroidBufferKm = 2000,
   capitalBufferKm = 2000,
   institutionBufferKm = 2000
@@ -35,8 +34,6 @@ process_gbif(
 \item{startYear}{(numeric) Start year of data}
 
 \item{endYear}{(numeric) End year of data}
-
-\item{coordPrec}{(numeric) Threshold for coordinate precision}
 
 \item{centroidBufferKm}{(numeric) Threshold for distance from state/county/etc centroid}
 
