@@ -3,6 +3,7 @@
 #' @param scientificName (character) Scientific name
 #' @param country (character) Country to download data from
 #' @param source (character) Source to download data from (e.g. "iNaturalist")
+#' @param startYear (numeric) Year after which to download data
 #' @param user (character) Username for GBIF account
 #' @param pwd (character) Password for GBIF account
 #' @param email (character) Email address for GBIF account
@@ -29,6 +30,7 @@
 download_gbif  <- function(scientificName,
                            country = "US",
                            source = "all",
+                           startYear = 1900,
                            user,
                            pwd,
                            email,
@@ -74,7 +76,7 @@ download_gbif  <- function(scientificName,
         rgbif::pred("occurrenceStatus", "PRESENT"),
         rgbif::pred("taxonKey", taxonKey),
         rgbif::pred("country", country),
-        rgbif::pred_gte("year", startyear),
+        rgbif::pred_gte("year", startYear),
         format = "SIMPLE_CSV",
         user = user, pwd = pwd, email = email)
     } else if (source == "iNaturalist") {
@@ -84,7 +86,7 @@ download_gbif  <- function(scientificName,
         rgbif::pred("occurrenceStatus", "PRESENT"),
         rgbif::pred("taxonKey", taxonKey),
         rgbif::pred("country", country),
-        rgbif::pred_gte("year", startyear),
+        rgbif::pred_gte("year", startYear),
         #rgbif::pred("institutionCode", "iNaturalist"),
         pred("datasetKey", "50c9509d-22c7-4a22-a47d-8c48425ef4a7"), # According to John Waller on 12/3/2025, this is more accurate than institutionCode == "iNaturalist"
         format = "SIMPLE_CSV",

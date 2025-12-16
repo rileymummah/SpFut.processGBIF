@@ -58,7 +58,7 @@ process_gbif <- function(scientificName,
 
 
   # Download
-  gbif.raw <- download_gbif(scientificName = scientificName,
+  gbif.raw <- download_gbif(scientificName = scientificName, startYear = startYear,
                              user = user, pwd = pwd, email = email)
   
   
