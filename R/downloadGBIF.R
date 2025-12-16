@@ -1,7 +1,6 @@
 #' Download GBIF data
 #'
 #' @param scientificName (character) Scientific name
-#' @param startyear (numeric) First year to download data from
 #' @param country (character) Country to download data from
 #' @param source (character) Source to download data from (e.g. "iNaturalist")
 #' @param user (character) Username for GBIF account
@@ -29,7 +28,6 @@
 
 
 download_gbif  <- function(scientificName,
-                           startyear,
                            country = "US",
                            source = "all",
                            user,

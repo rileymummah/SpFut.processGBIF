@@ -57,11 +57,8 @@ process_gbif <- function(scientificName,
   if (substr(citation.path, nchar(citation.path), nchar(citation.path)) != "/") paste0(citation.path, "/")
 
 
-
-  # download all possible scientific names
-  gbif.raw <- list(dat = c(), citation = c())
-  
-  gbif.raw <- download_gbif(scientificName = scientificName,
+  # Download
+  gbif.raw <- download_gbif(scientificName = scientificName, startYear = startYear,
                              user = user, pwd = pwd, email = email)
   
   
@@ -125,7 +122,7 @@ process_gbif <- function(scientificName,
     dat <- gbif.raw$dat
 
     # Clean gbif data and split into iNat and museum
-    gbif.clean <- clean_gbif(dat)
+    gbif.clean <- clean_gbif(dat, startYear = startYear, endYear = endYear)
 
     if ("iNat" %in% keep) {
       inat <- dplyr::filter(gbif.clean, source == 'iNat')
