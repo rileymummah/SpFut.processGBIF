@@ -56,7 +56,9 @@ download_gbif  <- function(scientificName,
     }
   }
   
-
+  # Check taxonkey
+  sciname <- name_usage(key = 5218343)
+  cat("Downloading data for", sciname$data$canonicalName, "\n")
 
   # Download data
   if (length(taxonKey) == 0) {
