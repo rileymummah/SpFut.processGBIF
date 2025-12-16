@@ -7,6 +7,7 @@
 #' @param user (character) Username for GBIF account
 #' @param pwd (character) Password for GBIF account
 #' @param email (character) Email address for GBIF account
+#' @param taxonKey (numeric) Taxon key representing the species of interest in GBIF. Default is "unknown", meaning taxon key will be searched for based on Scientific Name
 #'
 #' @returns A list of GBIF data and the associated citation
 #' @export
@@ -22,7 +23,8 @@
 #'                      source = "all",
 #'                      user = "Username",
 #'                      pwd = "Password",
-#'                      email = "email@email.com")
+#'                      email = "email@email.com",
+#'                      taxonKey = "unknown")
 #' }
 
 
@@ -32,28 +34,35 @@ download_gbif  <- function(scientificName,
                            source = "all",
                            user,
                            pwd,
-                           email) {
+                           email,
+                           taxonKey = "unknown") {
 
   # Get taxon key
 
-  tk <- data.frame(taxon = c("Animalia", "Archaea",
-                             "Bacteria", "Chromista", "Fungi",
-                             "Plantae", "Protozoa", "Viruses",
-                             "Amphibia"),
-                   taxonkey = c(1:8, 131))
-
-  if (scientificName %in% tk$taxon){
-    taxonKey <- tk$taxonkey[which(tk$taxon == scientificName)]
-  } else {
-    taxonKey <- rgbif::name_backbone(scientificName)$usageKey
+  
+  if (taxonKey == "unknown") {
+    tk <- data.frame(taxon = c("Animalia", "Archaea",
+                               "Bacteria", "Chromista", "Fungi",
+                               "Plantae", "Protozoa", "Viruses",
+                               "Amphibia"),
+                     taxonkey = c(1:8, 131))
+    
+    if (scientificName %in% tk$taxon){
+      taxonKey <- tk$taxonkey[which(tk$taxon == scientificName)]
+    } else {
+      cat("Searching for taxonkey for ", scientificName, "\n")
+      taxonKey <- rgbif::name_backbone(scientificName)$usageKey
+      cat("Using taxonkey ", taxonKey, "\n")
+    }
   }
+  
 
 
   # Download data
   if (length(taxonKey) == 0) {
     # If this species doesn't exist in GBIF
     dat <- data.frame()
-    print(paste0(scientificName, " does not exist in GBIF If you do not think this is correct, check the spelling and the taxonomy."))
+    cat(scientificName, " does not exist in GBIF. If you do not think this is correct, check the spelling and the taxonomy, or input the taxonkey directly with the `taxonkey` argument.\n")
 
   } else {
     # if it exists, download it
@@ -109,10 +118,12 @@ download_gbif  <- function(scientificName,
     all <- list(dat = dat,
                 citation = cite)
 
+    cat("Returning GBIF data for ", scientificName, ". Be careful, records for other species may have slipped in. Be sure to double check the `species` and `verbatimScientificName` columns\n")
+    
     return(all)
 
   } else {
-    print(paste0("No GBIF data exists for ", scientificName, "."))
+    cat("No GBIF data exists for ", scientificName, ".\n")
 
     return(all <- list(dat = dat))
   }
