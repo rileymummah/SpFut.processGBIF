@@ -4,10 +4,24 @@
 \alias{download_gbif}
 \title{Download GBIF data}
 \usage{
-download_gbif(scientificName, user, pwd, email)
+download_gbif(
+  scientificName,
+  startyear,
+  country = "US",
+  source = "all",
+  user,
+  pwd,
+  email
+)
 }
 \arguments{
 \item{scientificName}{(character) Scientific name}
+
+\item{startyear}{(numeric) First year to download data from}
+
+\item{country}{(character) Country to download data from}
+
+\item{source}{(character) Source to download data from (e.g. "iNaturalist")}
 
 \item{user}{(character) Username for GBIF account}
 
@@ -24,6 +38,9 @@ Download GBIF data
 \examples{
 \dontrun{
 raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
+                     startyear = 1990,
+                     country = "US",
+                     source = "all",
                      user = "Username",
                      pwd = "Password",
                      email = "email@email.com")

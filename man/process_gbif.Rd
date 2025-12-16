@@ -2,12 +2,14 @@
 % Please edit documentation in R/processGBIF.R
 \name{process_gbif}
 \alias{process_gbif}
-\title{Download and Process GBIF Data}
+\title{Download iNaturalist and museum data stored in GBIF and format it for Species Futures analysis}
 \usage{
 process_gbif(
   scientificName,
-  keep,
   sp.code,
+  keep = c("iNat", "museum"),
+  data.path,
+  citation.path,
   user,
   pwd,
   email,
@@ -19,11 +21,15 @@ process_gbif(
 )
 }
 \arguments{
-\item{scientificName}{(character) Scientific name}
-
-\item{keep}{(character) Must be "iNaturalist" or "Museum"; Not case sensitive}
+\item{scientificName}{(character vector) A vector of scientific names to search for}
 
 \item{sp.code}{(character) User-provided four character species code}
+
+\item{keep}{(character vector) Vector including 'iNat' and/or 'museum'; default is both}
+
+\item{data.path}{(character) Location where data should be saved}
+
+\item{citation.path}{(character) Location where citation should be saved}
 
 \item{user}{(character) Username for GBIF account}
 
@@ -42,7 +48,7 @@ process_gbif(
 \item{institutionBufferKm}{(numeric) Threshold for distance from institution (zoo, arboretum, etc.)}
 }
 \value{
-A list of GBIF data and the associated citation
+Writes two csv files containing iNaturalist and museum data from GBIF, and two txt files containing the associated citation(s)
 }
 \description{
 A wrapper for download_gbif() and clean_gbif() to process data in one step
@@ -51,7 +57,6 @@ A wrapper for download_gbif() and clean_gbif() to process data in one step
 \dontrun{
 dat <- process_gbif(scientificName = "Anaxyrus microscaphus",
                     sp.code = "ANMI",
-                    keep = "iNat",
                     user = "Username",
                     pwd = "Password",
                     email = "email@email.com")
