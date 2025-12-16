@@ -57,7 +57,7 @@ download_gbif  <- function(scientificName,
   }
   
   # Check taxonkey
-  sciname <- rgbif::name_usage(key = 5218343)
+  sciname <- rgbif::name_usage(key = taxonKey)
   cat("Downloading data for", sciname$data$canonicalName, "\n")
 
   # Download data
