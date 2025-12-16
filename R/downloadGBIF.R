@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @importFrom magrittr "%>%"
-#' @importFrom rgbif occ_download occ_download_wait name_backbone occ_download_get pred pred_in occ_download_import gbif_citation
+#' @importFrom rgbif occ_download occ_download_wait name_backbone occ_download_get pred pred_in occ_download_import gbif_citation name_usage
 #'
 #' @examples
 #' \dontrun{
@@ -57,7 +57,7 @@ download_gbif  <- function(scientificName,
   }
   
   # Check taxonkey
-  sciname <- name_usage(key = 5218343)
+  sciname <- rgbif::name_usage(key = 5218343)
   cat("Downloading data for", sciname$data$canonicalName, "\n")
 
   # Download data
