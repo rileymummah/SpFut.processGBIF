@@ -1,15 +1,15 @@
-#' Download iNaturalist and museum data stored in GBIF and format it for Species Futures analysis
+#' Download iNaturalist and museum data stored in GBIF and format it for flexiSDM analysis
 #'
-#' @description A wrapper for download_gbif() and clean_gbif() to process data in one step
+#' @description A wrapper for download_gbif() and clean_gbif() to process and format data for flexiSDM
 #'
 #' @param scientificName (character vector) A vector of scientific names to search for
-#' @param sp.code (character) User-provided four character species code
+#' @param sp.code (character) User-provided species identifier; defaults to scientificName
 #' @param keep (character vector) Vector including 'iNat' and/or 'museum'; default is both
 #' @param user (character) Username for GBIF account
 #' @param pwd (character) Password for GBIF account
 #' @param email (character) Email address for GBIF account
-#' @param data.path (character) Location where data should be saved
-#' @param citation.path (character) Location where citation should be saved
+#' @param data.path (character) Location where data should be saved; default is current directory
+#' @param citation.path (character) Location where citation should be saved; default is current directory
 #' @param startYear (numeric) Start year of data
 #' @param endYear (numeric) End year of data
 #' @param centroidBufferKm (numeric) Threshold for distance from state/county/etc centroid
@@ -35,10 +35,10 @@
 
 
 process_gbif <- function(scientificName,
-                         sp.code,
+                         sp.code = scientificName,
                          keep = c("iNat", "museum"),
-                         data.path,
-                         citation.path,
+                         data.path = ".",
+                         citation.path = ".",
 
                          # arguments to pass to download_gbif()
                          user,
@@ -60,52 +60,60 @@ process_gbif <- function(scientificName,
 
   # download all possible scientific names
   gbif.raw <- list(dat = c(), citation = c())
-  for (n in 1:length(scinames)) {
-    cat(scinames[n], "\n")
-
-    gbif.raw1 <- download_gbif(scientificName = scinames[n],
-                               user = user, pwd = pwd, email = email)
-
-    # Only keep entries that match scientific name
-    index <- which(gbif.raw1$dat$species == scinames[n] | stringr::str_to_sentence(gbif.raw1$dat$verbatimScientificName) == scinames[n])
-    gbif.raw1$dat <- gbif.raw1$dat[index,]
-
-    # Add to previously downloaded data
-    if (nrow(gbif.raw1$dat) > 0) {
-
-      # First, look for and remove duplicates
-      if (length(nrow(gbif.raw$dat)) > 0) {
-        old <- paste0(gbif.raw$dat$year, gbif.raw$dat$month, gbif.raw$dat$day, gbif.raw$dat$decimalLatitude, gbif.raw$dat$decimalLongitude)
-        new <- paste0(gbif.raw1$dat$year, gbif.raw1$dat$month, gbif.raw1$dat$day, gbif.raw1$dat$decimalLatitude, gbif.raw1$dat$decimalLongitude)
-
-        rm <- which(new %in% old)
-        if (length(rm) > 0) {
-          gbif.raw1$dat <- gbif.raw1$dat[-rm,]
-          cat("Removing ", length(rm), " records that are likely duplicates\n")
-        }
-
-        if (nrow(gbif.raw1$dat) == 0) {
-          cat("Adding 0 records with scientific name ", scinames[n], "\n")
-          next
-        }
-
-      }
-
-      gbif.raw1$dat$eventDate <- as.character(gbif.raw1$dat$eventDate)
-
-      gbif.raw1$dat <- dplyr::select(gbif.raw1$dat, !c(.data$catalogNumber))
-
-      # Then add to existing data
-      gbif.raw$dat <- dplyr::bind_rows(gbif.raw$dat, gbif.raw1$dat)
-      cat("Adding ", nrow(gbif.raw1$dat), " records with scientific name ", scinames[n], "\n")
-
-      cit <- paste0(scinames[n], ": ", gbif.raw1$citation)
-      gbif.raw$citation <- c(gbif.raw$citation, cit)
-
-
-    }
-
-  }
+  
+  gbif.raw <- download_gbif(scientificName = scientificName,
+                             user = user, pwd = pwd, email = email)
+  
+  
+  
+  
+  
+  # for (n in 1:length(scinames)) {
+  #   cat(scinames[n], "\n")
+  # 
+  #   gbif.raw1 <- download_gbif(scientificName = scinames[n],
+  #                              user = user, pwd = pwd, email = email)
+  # 
+  #   # Only keep entries that match scientific name
+  #   index <- which(gbif.raw1$dat$species == scinames[n] | stringr::str_to_sentence(gbif.raw1$dat$verbatimScientificName) == scinames[n])
+  #   gbif.raw1$dat <- gbif.raw1$dat[index,]
+  # 
+  #   # Add to previously downloaded data
+  #   if (nrow(gbif.raw1$dat) > 0) {
+  # 
+  #     # First, look for and remove duplicates
+  #     if (length(nrow(gbif.raw$dat)) > 0) {
+  #       old <- paste0(gbif.raw$dat$year, gbif.raw$dat$month, gbif.raw$dat$day, gbif.raw$dat$decimalLatitude, gbif.raw$dat$decimalLongitude)
+  #       new <- paste0(gbif.raw1$dat$year, gbif.raw1$dat$month, gbif.raw1$dat$day, gbif.raw1$dat$decimalLatitude, gbif.raw1$dat$decimalLongitude)
+  # 
+  #       rm <- which(new %in% old)
+  #       if (length(rm) > 0) {
+  #         gbif.raw1$dat <- gbif.raw1$dat[-rm,]
+  #         cat("Removing ", length(rm), " records that are likely duplicates\n")
+  #       }
+  # 
+  #       if (nrow(gbif.raw1$dat) == 0) {
+  #         cat("Adding 0 records with scientific name ", scinames[n], "\n")
+  #         next
+  #       }
+  # 
+  #     }
+  # 
+  #     gbif.raw1$dat$eventDate <- as.character(gbif.raw1$dat$eventDate)
+  # 
+  #     gbif.raw1$dat <- dplyr::select(gbif.raw1$dat, !c(.data$catalogNumber))
+  # 
+  #     # Then add to existing data
+  #     gbif.raw$dat <- dplyr::bind_rows(gbif.raw$dat, gbif.raw1$dat)
+  #     cat("Adding ", nrow(gbif.raw1$dat), " records with scientific name ", scinames[n], "\n")
+  # 
+  #     cit <- paste0(scinames[n], ": ", gbif.raw1$citation)
+  #     gbif.raw$citation <- c(gbif.raw$citation, cit)
+  # 
+  # 
+  #   }
+  # 
+  # }
 
 
   if (length(gbif.raw$dat) == 0) {
