@@ -104,6 +104,9 @@ download_gbif  <- function(scientificName,
     # Load data
     dat <- rgbif::occ_download_get(dlKey$key) %>% rgbif::occ_download_import()
 
+    # Only keep entries that match scientific name
+    index <- which(dat$species == scientificName | stringr::str_to_sentence(dat$verbatimScientificName) == scientificName)
+    dat <- dat[index,]
 
     # Remove zipped file
     rm.dir <- paste0(dlKey$key, ".zip")
@@ -118,7 +121,7 @@ download_gbif  <- function(scientificName,
     all <- list(dat = dat,
                 citation = cite)
 
-    cat("Returning GBIF data for ", scientificName, ". Be careful, records for other species may have slipped in. Be sure to double check the `species` and `verbatimScientificName` columns\n")
+    cat("Returning GBIF data for ", scientificName, "\n")
     
     return(all)
 
