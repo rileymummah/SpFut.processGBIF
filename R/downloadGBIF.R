@@ -17,7 +17,6 @@
 #' @examples
 #' \dontrun{
 #' raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
-#'                      startyear = 1990,
 #'                      country = "US",
 #'                      source = "all",
 #'                      user = "Username",
