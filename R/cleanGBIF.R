@@ -13,6 +13,8 @@
 #' @export
 #'
 #' @importFrom CoordinateCleaner cc_cen cc_cap cc_inst cc_sea
+#' @importFrom dplyr filter mutate distinct case_when
+#' @importFrom tidyr uncount
 #'
 #' @examples
 #' \dontrun{
@@ -37,9 +39,9 @@ clean_gbif <- function(raw,
 
   dat_clean <- raw %>%
 
-    dplyr::filter(occurrenceStatus  == "PRESENT") %>%
+    dplyr::filter(.data$occurrenceStatus  == "PRESENT") %>%
 
-    dplyr::filter(!basisOfRecord %in% c("FOSSIL_SPECIMEN","LIVING_SPECIMEN")) %>%
+    dplyr::filter(!.data$basisOfRecord %in% c("FOSSIL_SPECIMEN","LIVING_SPECIMEN")) %>%
 
     dplyr::filter(year >= startYear) %>%
 
@@ -48,7 +50,7 @@ clean_gbif <- function(raw,
                                                                    T ~ coordinateUncertaintyInMeters)) %>%
 
     # remove points at (0, 0)
-    dplyr::filter(!decimalLatitude == 0 | !decimalLongitude == 0) %>%
+    dplyr::filter(!.data$decimalLatitude == 0 | !.data$decimalLongitude == 0) %>%
 
     # remove points within 2km of country centroids
     CoordinateCleaner::cc_cen(buffer = centroidBufferKm) %>%
@@ -63,15 +65,16 @@ clean_gbif <- function(raw,
     CoordinateCleaner::cc_sea() %>%
 
     # remove duplicates
-    dplyr::distinct(decimalLongitude, decimalLatitude, speciesKey, datasetKey, .keep_all = TRUE)  %>%
+    dplyr::distinct(.data$decimalLongitude, .data$decimalLatitude,
+                    .data$speciesKey, .data$datasetKey, .keep_all = TRUE)  %>%
 
 
-    dplyr::filter(decimalLongitude < 0)
+    dplyr::filter(.data$decimalLongitude < 0)
 
 
   # separate counts into individual rows
   dat_clean$individualCount[which(is.na(dat_clean$individualCount))] <- 1
-  dat_clean <- dat_clean %>% tidyr::uncount(individualCount)
+  dat_clean <- dat_clean %>% tidyr::uncount(.data$individualCount)
 
   # clean up
   dat <- raw %>%
@@ -83,7 +86,8 @@ clean_gbif <- function(raw,
 
 
            # whether to include in "clean" dataset or not
-           incl = dplyr::case_when(gbifID %in% dat_clean$gbifID & source %in% c("iNat", "Museum") ~ 1,
+           incl = dplyr::case_when(gbifID %in% dat_clean$gbifID &
+                                     source %in% c("iNat", "Museum") ~ 1,
                                    T ~ 0)) #%>%
     #dplyr::filter(incl == 1)
 
