@@ -37,8 +37,8 @@
 process_gbif <- function(scientificName,
                          sp.code = scientificName,
                          keep = c("iNat", "museum"),
-                         data.path = ".",
-                         citation.path = ".",
+                         data.path = "",
+                         citation.path = "",
 
                          # arguments to pass to download_gbif()
                          user,
