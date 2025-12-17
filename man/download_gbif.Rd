@@ -6,28 +6,31 @@
 \usage{
 download_gbif(
   scientificName,
-  startyear,
   country = "US",
   source = "all",
+  startYear = 1900,
   user,
   pwd,
-  email
+  email,
+  taxonKey = "unknown"
 )
 }
 \arguments{
 \item{scientificName}{(character) Scientific name}
 
-\item{startyear}{(numeric) First year to download data from}
-
 \item{country}{(character) Country to download data from}
 
 \item{source}{(character) Source to download data from (e.g. "iNaturalist")}
+
+\item{startYear}{(numeric) Year after which to download data}
 
 \item{user}{(character) Username for GBIF account}
 
 \item{pwd}{(character) Password for GBIF account}
 
 \item{email}{(character) Email address for GBIF account}
+
+\item{taxonKey}{(numeric) Taxon key representing the species of interest in GBIF. Default is "unknown", meaning taxon key will be searched for based on Scientific Name}
 }
 \value{
 A list of GBIF data and the associated citation
@@ -38,11 +41,11 @@ Download GBIF data
 \examples{
 \dontrun{
 raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
-                     startyear = 1990,
                      country = "US",
                      source = "all",
                      user = "Username",
                      pwd = "Password",
-                     email = "email@email.com")
+                     email = "email@email.com",
+                     taxonKey = "unknown")
 }
 }

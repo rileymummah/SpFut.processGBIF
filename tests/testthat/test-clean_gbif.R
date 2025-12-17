@@ -1,5 +1,5 @@
 # Download raw and then clean it
-raw <- download_gbif(scientificName = "Anaxyrus macroscaphus",
+raw <- download_gbif(scientificName = "Eurycea bislineata",
                      user = "clanescher",
                      pwd = "0xjFyIlxJoKrNh",
                      email = "clanescher@gmail.com")

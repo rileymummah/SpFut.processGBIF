@@ -2,14 +2,14 @@
 % Please edit documentation in R/processGBIF.R
 \name{process_gbif}
 \alias{process_gbif}
-\title{Download iNaturalist and museum data stored in GBIF and format it for Species Futures analysis}
+\title{Download iNaturalist and museum data stored in GBIF and format it for flexiSDM analysis}
 \usage{
 process_gbif(
   scientificName,
-  sp.code,
+  sp.code = scientificName,
   keep = c("iNat", "museum"),
-  data.path,
-  citation.path,
+  data.path = ".",
+  citation.path = ".",
   user,
   pwd,
   email,
@@ -23,13 +23,13 @@ process_gbif(
 \arguments{
 \item{scientificName}{(character vector) A vector of scientific names to search for}
 
-\item{sp.code}{(character) User-provided four character species code}
+\item{sp.code}{(character) User-provided species identifier; defaults to scientificName}
 
 \item{keep}{(character vector) Vector including 'iNat' and/or 'museum'; default is both}
 
-\item{data.path}{(character) Location where data should be saved}
+\item{data.path}{(character) Location where data should be saved; default is current directory}
 
-\item{citation.path}{(character) Location where citation should be saved}
+\item{citation.path}{(character) Location where citation should be saved; default is current directory}
 
 \item{user}{(character) Username for GBIF account}
 
@@ -51,7 +51,7 @@ process_gbif(
 Writes two csv files containing iNaturalist and museum data from GBIF, and two txt files containing the associated citation(s)
 }
 \description{
-A wrapper for download_gbif() and clean_gbif() to process data in one step
+A wrapper for download_gbif() and clean_gbif() to process and format data for flexiSDM
 }
 \examples{
 \dontrun{
