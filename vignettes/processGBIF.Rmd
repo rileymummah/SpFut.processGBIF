@@ -84,27 +84,27 @@ sciname <- "Eurycea bislineata"
 sp.code <- "EBIS"
 
 # To download iNat data
-iNat <- process_gbif(scientificName = sciname,
-                     sp.code = sp.code,
-                     keep = "iNat",
-                     user = user,
-                     pwd = pwd,
-                     email = email)
+process_gbif(scientificName = sciname,
+             sp.code = sp.code,
+             keep = "iNat",
+             user = user,
+             pwd = pwd,
+             email = email)
 
-head(iNat)
+# head(iNat)
 ```
 
 
 Now let's save the museum data from GBIF
 
 ```{r processGBIF-museum}
-museum <- process_gbif(scientificName = sciname,
-                       sp.code = sp.code,
-                       keep = "museum",
-                       user = user,
-                       pwd = pwd,
-                       email = email)
+process_gbif(scientificName = sciname,
+             sp.code = sp.code,
+             keep = "museum",
+             user = user,
+             pwd = pwd,
+             email = email)
 
-head(museum)
+# head(museum)
 ```
 

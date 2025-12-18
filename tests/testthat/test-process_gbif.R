@@ -7,7 +7,7 @@ test_that("process_gbif only saves iNat data", {
                pwd = "0xjFyIlxJoKrNh",
                email = "clanescher@gmail.com")
 
-  expect_equal(file.exists('./.EBIS_iNat_PO.csv'), TRUE)
+  expect_equal(file.exists('./EBIS_iNat_PO.csv'), TRUE)
 
 })
 
@@ -20,6 +20,6 @@ test_that("process_gbif only saves Museum data", {
                pwd = "0xjFyIlxJoKrNh",
                email = "clanescher@gmail.com")
 
-  expect_equal(file.exists('./.EBIS_museum_PO.csv'), TRUE)
+  expect_equal(file.exists('./EBIS_museum_PO.csv'), TRUE)
 
 })

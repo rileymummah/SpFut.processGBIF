@@ -19,10 +19,10 @@
 #' @returns Writes two csv files containing iNaturalist and museum data from GBIF, and two txt files containing the associated citation(s)
 #' @export
 #'
+#' @importFrom rlang .data
 #' @importFrom lubridate as_date year
 #' @importFrom utils write.csv
-#' @importFrom dplyr n select bind_rows filter
-#' @importFrom rlang .data
+#' @importFrom dplyr n bind_rows filter ungroup group_by cur_group_id select
 #'
 #' @examples
 #' \dontrun{
@@ -60,8 +60,8 @@ process_gbif <- function(scientificName,
   # Download
   gbif.raw <- download_gbif(scientificName = scientificName, startYear = startYear,
                              user = user, pwd = pwd, email = email)
-  
-  
+
+
   if (nrow(gbif.raw$dat) == 0) {
     cat("There are no GBIF data for this species.\n")
 
@@ -74,12 +74,12 @@ process_gbif <- function(scientificName,
     gbif.clean <- clean_gbif(dat, startYear = startYear, endYear = endYear)
 
     if ("iNat" %in% keep) {
-      inat <- dplyr::filter(gbif.clean, source == 'iNat')
+      inat <- filter(gbif.clean, source == 'iNat')
     } else {
       inat <- data.frame()
     }
     if ("museum" %in% keep) {
-      mus <- dplyr::filter(gbif.clean, source == 'Museum')
+      mus <- filter(gbif.clean, source == 'Museum')
     } else {
       mus <- data.frame()
     }
@@ -88,30 +88,30 @@ process_gbif <- function(scientificName,
 
       # format for species futures
       inat <- inat %>%
-        dplyr::mutate(date = substr(.data$eventDate, 1, 10),
-                      date = lubridate::as_date(date),
-                      year = lubridate::year(date),
-                      lat = .data$decimalLatitude,
-                      lon = .data$decimalLongitude,
-                      coord.unc = .data$coordinateUncertaintyInMeters,
-                      survey.conducted = 1,
-                      count = 1,
-                      data.type = "PO",
-                      age = "NR",
-                      individual.id = NA,
-                      time.to.detect = NA,
-                      species = sp.code) %>%
+        mutate(date = substr(.data$eventDate, 1, 10),
+               date = as_date(date),
+               year = year(date),
+               lat = .data$decimalLatitude,
+               lon = .data$decimalLongitude,
+               coord.unc = .data$coordinateUncertaintyInMeters,
+               survey.conducted = 1,
+               count = 1,
+               data.type = "PO",
+               age = "NR",
+               individual.id = NA,
+               time.to.detect = NA,
+               species = sp.code) %>%
 
         # make site.id
-        dplyr::group_by(.data$lat, .data$lon) %>%
-        dplyr::mutate(site.id = paste0(source, dplyr::cur_group_id())) %>%
-        dplyr::ungroup() %>%
+        group_by(.data$lat, .data$lon) %>%
+        mutate(site.id = paste0(source, cur_group_id())) %>%
+        ungroup() %>%
 
 
         # get survey.id
-        dplyr::mutate(survey.id = 1:n(),
-                      pass.id = 1,
-                      survey.pass = paste0(.data$survey.id, "_", .data$pass.id)) %>%
+        mutate(survey.id = 1:n(),
+               pass.id = 1,
+               survey.pass = paste0(.data$survey.id, "_", .data$pass.id)) %>%
 
 
         # select cols to keep
@@ -134,30 +134,30 @@ process_gbif <- function(scientificName,
 
       # format for species futures
       mus <- mus %>%
-        dplyr::mutate(date = substr(.data$eventDate, 1, 10),
-                      date = lubridate::as_date(date),
-                      year = lubridate::year(date),
-                      lat = .data$decimalLatitude,
-                      lon = .data$decimalLongitude,
-                      coord.unc = .data$coordinateUncertaintyInMeters,
-                      survey.conducted = 1,
-                      count = 1,
-                      data.type = "PO",
-                      age = "NR",
-                      individual.id = NA,
-                      time.to.detect = NA,
-                      species = sp.code) %>%
+        mutate(date = substr(.data$eventDate, 1, 10),
+               date = as_date(date),
+               year = year(date),
+               lat = .data$decimalLatitude,
+               lon = .data$decimalLongitude,
+               coord.unc = .data$coordinateUncertaintyInMeters,
+               survey.conducted = 1,
+               count = 1,
+               data.type = "PO",
+               age = "NR",
+               individual.id = NA,
+               time.to.detect = NA,
+               species = sp.code) %>%
 
         # make site.id
-        dplyr::group_by(.data$lat, .data$lon) %>%
-        dplyr::mutate(site.id = paste0(source, dplyr::cur_group_id())) %>%
-        dplyr::ungroup() %>%
+        group_by(.data$lat, .data$lon) %>%
+        mutate(site.id = paste0(source, cur_group_id())) %>%
+        ungroup() %>%
 
 
         # get survey.id
-        dplyr::mutate(survey.id = 1:n(),
-                      pass.id = 1,
-                      survey.pass = paste0(.data$survey.id, "_", .data$pass.id)) %>%
+        mutate(survey.id = 1:n(),
+               pass.id = 1,
+               survey.pass = paste0(.data$survey.id, "_", .data$pass.id)) %>%
 
 
         # select cols to keep
