@@ -5,5 +5,5 @@
 .DS_Store
 .quarto
 *.Rproj
-inst/doc
+.Renviron
 tests/testthat/*EBIS*
