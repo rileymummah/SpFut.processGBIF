@@ -93,8 +93,7 @@ download_gbif  <- function(scientificName,
         format = "SIMPLE_CSV",
         user = user, pwd = pwd, email = email)
     } else {
-      cat("source must be 'all' or 'iNaturalist'")
-      break
+      stop("source must be 'all' or 'iNaturalist'")
     }
 
 

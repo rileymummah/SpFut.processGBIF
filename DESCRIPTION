@@ -1,19 +1,19 @@
 Package: SpFut.processGBIF
 Title: Download and Process GBIF Data
 Version: 1.0.0
-Authors@R: 
-    c(person(given = "C. Lane", 
-              family = "Scher", 
-              email = "cls5092@psu.edu", 
-              role = c("aut"),
-              comment = c(ORCID = "0000-0003-3689-5769")),
-      person(given = "Riley", 
-              family = "Mummah", 
-              email = "rmummah@usgs.gov", 
-              role = c("com", "cre"),
-              comment = c(ORCID = "0000-0002-4542-3483"))
-      )
-Description: A simple package of wrappers for the rgbif functions to download and process iNat and museum data from the Global Biodiversity Information Facility (GBIF).
+Authors@R: c(
+    person(given = "C. Lane", 
+           family = "Scher", 
+           email = "cls7052@psu.edu", 
+           role = c("aut"),
+           comment = c(ORCID = "0000-0003-3689-5769")),
+    person(given = "Riley", 
+           family = "Mummah", 
+           email = "rmummah@usgs.gov", 
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-4542-3483"))
+           )
+Description: A simple package of wrappers for the rgbif functions to download and process iNaturalist and museum data from the Global Biodiversity Information Facility (GBIF).
 License: CC0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

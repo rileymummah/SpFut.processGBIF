@@ -59,7 +59,7 @@ process_gbif <- function(scientificName,
 
   # Download
   gbif.raw <- download_gbif(scientificName = scientificName, startYear = startYear,
-                             user = user, pwd = pwd, email = email)
+                            user = user, pwd = pwd, email = email)
 
 
   if (nrow(gbif.raw$dat) == 0) {
@@ -89,7 +89,7 @@ process_gbif <- function(scientificName,
       # format for species futures
       inat <- inat %>%
         mutate(date = substr(.data$eventDate, 1, 10),
-               date = as_date(date),
+               date = suppressWarnings(as_date(date)), # Will not report failure to parse
                year = year(date),
                lat = .data$decimalLatitude,
                lon = .data$decimalLongitude,
@@ -115,12 +115,10 @@ process_gbif <- function(scientificName,
 
 
         # select cols to keep
-        dplyr::select(.data$site.id, .data$lat, .data$lon, .data$stateProvince,
-                      .data$coord.unc, .data$eventDate, .data$day, .data$month,
-                      .data$year, .data$survey.conducted, .data$survey.id,
-                      .data$pass.id, .data$survey.pass, .data$data.type,
-                      .data$species, .data$age, .data$individual.id,
-                      .data$time.to.detect, .data$count)
+        select("site.id", "lat", "lon", "stateProvince", "coord.unc",
+               "eventDate", "day", "month", "year", "survey.conducted",
+               "survey.id", "pass.id", "survey.pass", "data.type", "species",
+               "age", "individual.id", "time.to.detect", "count")
 
       if (nrow(inat) > 0) {
         write.csv(inat, file = paste0(data.path, sp.code, "_iNat_PO.csv"), row.names = F)
@@ -135,7 +133,7 @@ process_gbif <- function(scientificName,
       # format for species futures
       mus <- mus %>%
         mutate(date = substr(.data$eventDate, 1, 10),
-               date = as_date(date),
+               date = suppressWarnings(as_date(date)), # Will not report failure to parse
                year = year(date),
                lat = .data$decimalLatitude,
                lon = .data$decimalLongitude,
@@ -161,12 +159,10 @@ process_gbif <- function(scientificName,
 
 
         # select cols to keep
-        dplyr::select(.data$site.id, .data$lat, .data$lon, .data$stateProvince,
-                      .data$coord.unc, .data$eventDate, .data$day, .data$month,
-                      .data$year, .data$survey.conducted, .data$survey.id,
-                      .data$pass.id, .data$survey.pass, .data$data.type,
-                      .data$species, .data$age, .data$individual.id,
-                      .data$time.to.detect, .data$count)
+        select("site.id", "lat", "lon", "stateProvince", "coord.unc",
+               "eventDate", "day", "month", "year", "survey.conducted",
+               "survey.id", "pass.id", "survey.pass", "data.type", "species",
+               "age", "individual.id", "time.to.detect", "count")
 
       if (nrow(mus) > 0) {
         write.csv(mus, file = paste0(data.path, sp.code, "_museum_PO.csv"), row.names = F)
