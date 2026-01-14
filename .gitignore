@@ -6,6 +6,4 @@
 .quarto
 *.Rproj
 inst/doc
-/doc/
-/Meta/
 tests/testthat/*EBIS*
