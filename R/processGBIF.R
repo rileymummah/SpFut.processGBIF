@@ -4,10 +4,11 @@
 #'
 #' @param scientificName (character vector) A vector of scientific names to search for
 #' @param sp.code (character) User-provided species identifier; defaults to scientificName
-#' @param keep (character vector) Vector including 'iNat' and/or 'museum'; default is both
+#' @param keep (character vector) Vector including 'iNaturalist' and/or 'museum'; default is both
 #' @param user (character) Username for GBIF account
 #' @param pwd (character) Password for GBIF account
 #' @param email (character) Email address for GBIF account
+#' @param out (character) How output should be saved; defaults to 'save' (output is saved to data.path and citation.path), alternative is 'return' (output is returned as a list)
 #' @param data.path (character) Location where data should be saved; default is current directory
 #' @param citation.path (character) Location where citation should be saved; default is current directory
 #' @param startYear (numeric) Start year of data
@@ -36,7 +37,8 @@
 
 process_gbif <- function(scientificName,
                          sp.code = scientificName,
-                         keep = c("iNat", "museum"),
+                         keep = c("iNaturalist", "museum"),
+                         out = "save",
                          data.path = "",
                          citation.path = "",
 
@@ -52,6 +54,12 @@ process_gbif <- function(scientificName,
                          capitalBufferKm = 2000,
                          institutionBufferKm = 2000) {
 
+  ret <- list()
+  
+  # check keep argument
+  diff <- setdiff(keep, c("iNaturalist", "museum"))
+  if (length(diff) > 0) stop("Keep must be 'iNaturalist', 'museum', or both")
+  
   # clean paths
   if (substr(data.path, nchar(data.path), nchar(data.path)) != "/") paste0(data.path, "/")
   if (substr(citation.path, nchar(citation.path), nchar(citation.path)) != "/") paste0(citation.path, "/")
@@ -73,7 +81,7 @@ process_gbif <- function(scientificName,
     # Clean gbif data and split into iNat and museum
     gbif.clean <- clean_gbif(dat, startYear = startYear, endYear = endYear)
 
-    if ("iNat" %in% keep) {
+    if ("iNaturalist" %in% keep) {
       inat <- filter(gbif.clean, source == 'iNat')
     } else {
       inat <- data.frame()
@@ -84,7 +92,7 @@ process_gbif <- function(scientificName,
       mus <- data.frame()
     }
 
-    if (nrow(inat) > 0 & "iNat" %in% keep) {
+    if (nrow(inat) > 0 & "iNaturalist" %in% keep) {
 
       # format for species futures
       inat <- inat %>%
@@ -120,12 +128,14 @@ process_gbif <- function(scientificName,
                "survey.id", "pass.id", "survey.pass", "data.type", "species",
                "age", "individual.id", "time.to.detect", "count")
 
-      if (nrow(inat) > 0) {
+      if (nrow(inat) > 0 & out == "save") {
         write.csv(inat, file = paste0(data.path, sp.code, "_iNat_PO.csv"), row.names = F)
         writeLines(gbif.raw$citation, paste0(citation.path, "iNat-", sp.code, ".txt"))
+      } else if (nrow(inat) > 0 & out == "return") {
+        ret[["iNaturalist"]] <- list(dat = inat, citation = gbif.raw$citation)
       }
     } else {
-      cat("There are no iNaturalist records for this species\n")
+      if ("iNaturalist" %in% keep) cat("There are no iNaturalist records for this species\n")
     }
 
     if (nrow(mus) > 0 & "museum" %in% keep) {
@@ -164,13 +174,15 @@ process_gbif <- function(scientificName,
                "survey.id", "pass.id", "survey.pass", "data.type", "species",
                "age", "individual.id", "time.to.detect", "count")
 
-      if (nrow(mus) > 0) {
+      if (nrow(mus) > 0 & out == "save") {
         write.csv(mus, file = paste0(data.path, sp.code, "_museum_PO.csv"), row.names = F)
         writeLines(gbif.raw$citation, paste0(citation.path, "museum-", sp.code, ".txt"))
+      } else if (nrow(inat) > 0 & out == "return") {
+        ret[["museum"]] <- list(dat = mus, citation = gbif.raw$citation)
       }
 
     } else {
-      cat("There are no museum records for this species\n")
+      if ("museum" %in% keep) cat("There are no museum records for this species\n")
     }
 
     rm(list=c('dat','gbif.clean','gbif.raw','inat','mus'))
@@ -178,6 +190,7 @@ process_gbif <- function(scientificName,
 
   } # end there are iNat data for this species
 
+  if (out == "return") return(ret)
 
 }
 
