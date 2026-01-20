@@ -78,7 +78,7 @@ clean_gbif <- function(raw,
   dat_clean <- dat_clean %>% uncount(.data$individualCount)
 
   # clean up
-  dat <- raw %>%
+  dat <- dat_clean %>%
 
     # categorize as iNat or Museum
     mutate(source = case_when(institutionCode == "iNaturalist" ~ "iNat",
@@ -89,11 +89,12 @@ clean_gbif <- function(raw,
            # whether to include in "clean" dataset or not
            incl = case_when(gbifID %in% dat_clean$gbifID &
                               source %in% c("iNat", "Museum") ~ 1,
-                           T ~ 0)) #%>%
-    #filter(incl == 1)
+                           T ~ 0)) %>%
+    filter(incl == 1) %>% 
+    select(!incl)
 
   rmed <- nrow(raw) - nrow(dat)
-  cat("Removed ", rmed, " of ", nrow(raw), " records (", rmed/nrow(raw)*100, "%)\n")
+  cat("Removed ", rmed, " of ", nrow(raw), " records (", round(rmed/nrow(raw)*100, 1), "%)\n")
 
   return(dat)
 
